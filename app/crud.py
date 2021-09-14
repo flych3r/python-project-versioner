@@ -1,6 +1,8 @@
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app import models, schemas
+from app.utils.exceptions import BadRequestException
 from app.utils.pypi import normalize
 
 
@@ -15,18 +17,21 @@ def get_project(db: Session, project_name: str):
 
 
 def create_project(db: Session, project: schemas.ProjectView):
-    db_project = models.Project(
-        name=project.name,
-        normalized_name=normalize(project.name),
-        packages_releases=[
-            models.PackageRelease(name=pkg.name, version=pkg.version)
-            for pkg in project.packages
-        ]
-    )
-    db.add(db_project)
-    db.commit()
-    db.refresh(db_project)
-    return db_project
+    try:
+        db_project = models.Project(
+            name=project.name,
+            normalized_name=normalize(project.name),
+            packages_releases=[
+                models.PackageRelease(name=pkg.name, version=pkg.version)
+                for pkg in project.packages
+            ]
+        )
+        db.add(db_project)
+        db.commit()
+        db.refresh(db_project)
+        return db_project
+    except IntegrityError:
+        raise BadRequestException(message='Project already exists')
 
 
 def get_packages_releases(db: Session, skip: int = 0, limit: int = 100):
@@ -36,4 +41,4 @@ def get_packages_releases(db: Session, skip: int = 0, limit: int = 100):
 def delete_project(db: Session, project: models.Project):
     db.delete(project)
     db.commit()
-    return {'message': 'Project deleted'}
+    return True
