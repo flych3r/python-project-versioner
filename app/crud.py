@@ -2,7 +2,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app import models, schemas
-from app.utils.exceptions import BadRequestException
+from app.utils.exceptions import BadRequestError
 from app.utils.pypi import normalize
 
 
@@ -31,7 +31,7 @@ def create_project(db: Session, project: schemas.ProjectView):
         db.refresh(db_project)
         return db_project
     except IntegrityError:
-        raise BadRequestException(message='Project already exists')
+        raise BadRequestError(message='Project already exists')
 
 
 def get_packages_releases(db: Session, skip: int = 0, limit: int = 100):

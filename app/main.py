@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from app import __version__
 from app.dependencies.config import SETTINGS
 from app.routers import projects
-from app.utils.exceptions import BadRequestException
+from app.utils.exceptions import BadRequestError
 
 root_path = f'/{SETTINGS.app_env}'
 app = FastAPI(
@@ -16,8 +16,8 @@ app = FastAPI(
 app.include_router(projects.router)
 
 
-@app.exception_handler(BadRequestException)
-async def unicorn_exception_handler(request: Request, exc: BadRequestException):
+@app.exception_handler(BadRequestError)
+async def unicorn_exception_handler(request: Request, exc: BadRequestError):
     return JSONResponse(
         status_code=exc.code,
         content={'error': exc.message},

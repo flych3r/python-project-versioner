@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 
 from app import crud, schemas
 from app.dependencies.database import get_db
-from app.utils.exceptions import BadRequestException, ExceptionModel
+from app.utils.exceptions import BadRequestError, ExceptionModel
 from app.utils.pypi import check_package_version
 
 router = APIRouter(
@@ -31,7 +31,7 @@ def get_projects(db: Session = Depends(get_db)):
 def get_project_detail(project_name: str, db: Session = Depends(get_db)):
     project = crud.get_project(db, project_name)
     if project is None:
-        raise BadRequestException(message='Project not found')
+        raise BadRequestError(message='Project not found')
     return {'name': project.name, 'packages': project.packages_releases}
 
 
@@ -56,6 +56,6 @@ def create_project(project: schemas.ProjectView, db: Session = Depends(get_db)):
 def delete_project(project_name: str, db: Session = Depends(get_db)):
     project = crud.get_project(db, project_name)
     if project is None:
-        raise BadRequestException(message='Project not found')
+        raise BadRequestError(message='Project not found')
     _ = crud.delete_project(db, project)
     return {'message': 'Project deleted'}

@@ -2,7 +2,7 @@ import re
 
 import requests
 
-from app.utils.exceptions import BadRequestException
+from app.utils.exceptions import BadRequestError
 
 
 def normalize(name):
@@ -20,4 +20,4 @@ def check_package_version(package):
     if r.ok:
         package.version = r.json().get('info').get('version')
         return package
-    raise BadRequestException(message="One or more packages doesn't exist")
+    raise BadRequestError(message="One or more packages doesn't exist")
