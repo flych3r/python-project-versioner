@@ -22,6 +22,8 @@ mypy = "==0.910"
 pep8-naming = "==0.12.1"
 pre-commit = "==2.15.0"
 pytest = "==6.2.5"
+pytest-env = "==0.6.2"
+pytest-mock = "==3.6.1"
 
 [requires]
 python_version = "3.9"
