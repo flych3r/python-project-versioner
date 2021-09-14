@@ -8,7 +8,8 @@ class Project(Base):
     __tablename__ = 'projects'
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, unique=True, index=True)
+    name = Column(String)
+    normalized_name = Column(String, primary_key=True, index=True)
 
     packages_releases = relationship('PackageRelease', back_populates='project')
 
