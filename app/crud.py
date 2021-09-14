@@ -8,14 +8,16 @@ def get_projects(db: Session):
     return db.query(models.Project).all()
 
 
-def get_project(db: Session, project_id: str):
-    return db.query(models.Project).filter(models.Project.id == project_id).first()
+def get_project(db: Session, project_name: str):
+    return db.query(models.Project).filter(
+        models.Project.normalized_name == normalize(project_name)
+    ).first()
 
 
 def create_project(db: Session, project: schemas.ProjectView):
     db_project = models.Project(
-        id=normalize(project.name),
         name=project.name,
+        normalized_name=normalize(project.name),
         packages_releases=[
             models.PackageRelease(name=pkg.name, version=pkg.version)
             for pkg in project.packages

@@ -9,7 +9,7 @@ class Project(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
-    normalized_name = Column(String, primary_key=True, index=True)
+    normalized_name = Column(String, unique=True, index=True)
 
     packages_releases = relationship('PackageRelease', back_populates='project')
 

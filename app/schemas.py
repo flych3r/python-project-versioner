@@ -45,3 +45,7 @@ class Project(ProjectBase):
 
     class Config:
         orm_mode = True
+
+
+class PyPiException(BaseModel):
+    error: str = "One or more packages doesn't exist"
