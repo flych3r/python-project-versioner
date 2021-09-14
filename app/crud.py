@@ -1,22 +1,37 @@
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app import models, schemas
-
-
-def get_project(db: Session, project_id: int):
-    return db.query(models.Project).filter(models.Project.id == project_id).first()
+from app.utils.exceptions import BadRequestError
+from app.utils.pypi import normalize
 
 
 def get_projects(db: Session):
     return db.query(models.Project).all()
 
 
-def create_project(db: Session, project: schemas.ProjectCreate):
-    db_project = models.Project(name=project.name)
-    db.add(db_project)
-    db.commit()
-    db.refresh(db_project)
-    return db_project
+def get_project(db: Session, project_name: str):
+    return db.query(models.Project).filter(
+        models.Project.normalized_name == normalize(project_name)
+    ).first()
+
+
+def create_project(db: Session, project: schemas.ProjectView):
+    try:
+        db_project = models.Project(
+            name=project.name,
+            normalized_name=normalize(project.name),
+            packages_releases=[
+                models.PackageRelease(name=pkg.name, version=pkg.version)
+                for pkg in project.packages
+            ]
+        )
+        db.add(db_project)
+        db.commit()
+        db.refresh(db_project)
+        return db_project
+    except IntegrityError:
+        raise BadRequestError(message='Project already exists')
 
 
 def get_packages_releases(db: Session, skip: int = 0, limit: int = 100):
@@ -26,4 +41,4 @@ def get_packages_releases(db: Session, skip: int = 0, limit: int = 100):
 def delete_project(db: Session, project: models.Project):
     db.delete(project)
     db.commit()
-    return {'message': 'Project deleted'}
+    return True

@@ -19,7 +19,7 @@ clean:
 
 lint: venv clean
 	pipenv run flake8
-	pipenv run mypy
+	pipenv run mypy --install-types --non-interactive
 
 test: venv clean
 	pipenv run pytest

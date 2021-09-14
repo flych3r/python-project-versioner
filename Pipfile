@@ -8,6 +8,7 @@ loguru = "~=0.5.3"
 fastapi = "~=0.68.1"
 uvicorn = {version = "~=0.15.0", extras = ["standard"]}
 SQLAlchemy = "~=1.4.23"
+requests = "~=2.26.0"
 "psycopg2-binary" = "==2.8.6"
 alembic = "==1.7.1"
 
@@ -21,6 +22,8 @@ mypy = "==0.910"
 pep8-naming = "==0.12.1"
 pre-commit = "==2.15.0"
 pytest = "==6.2.5"
+pytest-env = "==0.6.2"
+pytest-mock = "==3.6.1"
 
 [requires]
 python_version = "3.9"

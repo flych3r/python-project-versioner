@@ -1,11 +1,10 @@
-from typing import List
+from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 
-from fastapi import Depends, FastAPI
-from sqlalchemy.orm import Session
-
-from app import __version__, crud, schemas
+from app import __version__
 from app.dependencies.config import SETTINGS
-from app.dependencies.database import SessionLocal
+from app.routers import projects
+from app.utils.exceptions import BadRequestError
 
 root_path = f'/{SETTINGS.app_env}'
 app = FastAPI(
@@ -14,40 +13,17 @@ app = FastAPI(
     version=__version__,
     root_path=root_path
 )
+app.include_router(projects.router)
 
 
-# Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+@app.exception_handler(BadRequestError)
+async def unicorn_exception_handler(request: Request, exc: BadRequestError):
+    return JSONResponse(
+        status_code=exc.code,
+        content={'error': exc.message},
+    )
 
 
-@app.get('/projects/', response_model=List[schemas.Project])
-def get_projects(db: Session = Depends(get_db)):
-    projects = crud.get_projects(db)
-    return projects
-
-
-@app.get('/projects/{project_name}', response_model=schemas.Project)
-def get_project_detail(project_name: str, db: Session = Depends(get_db)):
-    # TODO
-    # - Retornar informações do projeto
-    return {'foo': 'bar'}
-
-
-@app.post('/projects/', response_model=schemas.Project)
-def create_project(project: schemas.ProjectCreate, db: Session = Depends(get_db)):
-    # TODO
-    # - Processar pacotes recebidos
-    # - Persistir as informações no banco
-    return {'foo': 'bar'}
-
-
-@app.delete('/projects/{project_id}')
-def delete_project(project_name: str, db: Session = Depends(get_db)):
-    # TODO
-    # - Apagar o projeto indicado
-    return {'foo': 'bar'}
+@app.get('/')
+def root():
+    return {'status': 'ok'}
