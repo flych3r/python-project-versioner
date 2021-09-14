@@ -8,6 +8,7 @@ loguru = "~=0.5.3"
 fastapi = "~=0.68.1"
 uvicorn = {version = "~=0.15.0", extras = ["standard"]}
 SQLAlchemy = "~=1.4.23"
+requests = "~=2.26.0"
 "psycopg2-binary" = "==2.8.6"
 alembic = "==1.7.1"
 
