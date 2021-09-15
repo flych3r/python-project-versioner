@@ -5,6 +5,21 @@ from app.dependencies.database import Base
 
 
 class Project(Base):
+    """
+    ORM model for a project.
+
+    Parameters
+    ----------
+        id: int, primary_key
+            uid of the project
+        name: str
+            name of the project
+        normalized_name: str, unique
+            unique name for the project
+        package_releases: list of PackageRelease, relationship
+            packages associated with the project
+    """
+
     __tablename__ = 'projects'
 
     id = Column(Integer, primary_key=True, index=True)
@@ -15,6 +30,23 @@ class Project(Base):
 
 
 class PackageRelease(Base):
+    """
+    ORM model for a package.
+
+    Parameters
+    ----------
+        id: int, primary_key
+            uid of the project
+        name: str
+            name of the package
+        version: str
+            version of the package
+        project_id: int, foreign_key
+            id of the project associated with the package
+        project: Project, relationship
+            project with the package
+    """
+
     __tablename__ = 'packages_releases'
 
     id = Column(Integer, primary_key=True, index=True)

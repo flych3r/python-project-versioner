@@ -5,11 +5,35 @@ import requests
 from app.utils.exceptions import BadRequestError
 
 
-def normalize(name):
+def normalize(name: str) -> str:
+    """
+    Normalizes the name of the package.
+
+    The name should be lowercased with all runs of the characters ., -, or _
+    replaced with a single - character.
+    """
     return re.sub(r'[-_.]+', '-', name).lower()
 
 
 def check_package_version(package):
+    """
+    Validates package name and version, adding version if missing.
+
+    Parameters
+    ----------
+    package : PackageRelease
+        package with name and version
+
+    Returns
+    -------
+    package
+        validated package
+
+    Raises
+    ------
+    BadRequestError
+        If package doesn't exists
+    """
     name = package.name
     version = package.version
 
