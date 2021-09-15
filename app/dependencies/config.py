@@ -1,10 +1,6 @@
 from enum import Enum
-from typing import Optional
 
-from pydantic import BaseSettings, constr
-from pydantic.networks import PostgresDsn
-
-SqliteDsn = constr(regex=r'sqlite:///.*')
+from pydantic import BaseSettings
 
 
 class AppEnv(str, Enum):
@@ -19,8 +15,7 @@ class AppEnv(str, Enum):
 class Settings(BaseSettings):
     """Application settings."""
 
-    database_url: Optional[PostgresDsn]
-    test_db_uri: Optional[SqliteDsn]  # type: ignore[valid-type]
+    database_url: str
     app_env: AppEnv = AppEnv.none
 
     class Config:
