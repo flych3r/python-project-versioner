@@ -11,12 +11,12 @@ COPY ./Pipfile .
 COPY ./Pipfile.lock .
 RUN pipenv install
 
-COPY ./linux_run.sh .
-RUN chmod +x ./linux_run.sh
+COPY ./start.sh .
+RUN chmod +x ./start.sh
 
 COPY ./app ./app
 
 COPY ./alembic.ini .
 COPY ./migrations ./migrations
 
-ENTRYPOINT ["./linux_run.sh"]
+CMD ["./start.sh"]
