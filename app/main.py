@@ -15,6 +15,7 @@ app.include_router(projects.router)
 
 @app.exception_handler(BadRequestError)
 async def unicorn_exception_handler(request: Request, exc: BadRequestError):
+    """Generates a custom exception message for BadRequestError."""
     return JSONResponse(
         status_code=exc.code,
         content={'error': exc.message},
@@ -23,4 +24,5 @@ async def unicorn_exception_handler(request: Request, exc: BadRequestError):
 
 @app.get('/')
 def root():
+    """Root endpoint to check status."""
     return {'status': 'ok'}
