@@ -8,8 +8,10 @@ if SETTINGS.app_env == AppEnv.test:
     connect_args = {'check_same_thread': False}
     db_url = SETTINGS.test_db_uri
 else:
-    db_url = SETTINGS.database_url.replace('postgres://', 'postgresql://')
     connect_args = {}
+    db_url = SETTINGS.database_url
+    if db_url.startswith('postgres://'):
+        db_url = db_url.replace('postgres://', 'postgresql://', 1)
 engine = create_engine(db_url, connect_args=connect_args)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
