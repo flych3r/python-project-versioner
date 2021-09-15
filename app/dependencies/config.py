@@ -19,7 +19,7 @@ class AppEnv(str, Enum):
 class Settings(BaseSettings):
     """Application settings."""
 
-    db_uri: Optional[PostgresDsn]
+    database_url: Optional[PostgresDsn]
     test_db_uri: Optional[SqliteDsn]  # type: ignore[valid-type]
     app_env: AppEnv = AppEnv.none
 

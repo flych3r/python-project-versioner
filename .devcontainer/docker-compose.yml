@@ -15,7 +15,7 @@ services:
         USER_UID: 1000
         USER_GID: 1000
     environment:
-      DB_URI: postgresql://postgres:postgres@db:5432/app
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/app
     volumes:
       - ..:/workspace:cached
     # Overrides default command so things don't shut down after the process ends.
