@@ -12,6 +12,7 @@ if SETTINGS.app_env == AppEnv.test:
 else:
     if db_url.startswith('postgres://'):
         db_url = db_url.replace('postgres://', 'postgresql://', 1)
+print(db_url)
 engine = create_engine(db_url, connect_args=connect_args)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
