@@ -5,7 +5,8 @@ from sqlalchemy.orm import sessionmaker
 from app.dependencies.config import SETTINGS, AppEnv
 
 if SETTINGS.app_env == AppEnv.test:
-    engine = create_engine(SETTINGS.test_db_uri)
+    connect_args = {'check_same_thread': False}
+    engine = create_engine(SETTINGS.test_db_uri, connect_args=connect_args)
 else:
     engine = create_engine(SETTINGS.db_uri)
 
