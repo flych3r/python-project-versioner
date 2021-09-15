@@ -6,9 +6,11 @@ from app.dependencies.config import SETTINGS, AppEnv
 
 if SETTINGS.app_env == AppEnv.test:
     connect_args = {'check_same_thread': False}
-    engine = create_engine(SETTINGS.test_db_uri, connect_args=connect_args)
+    db_url = SETTINGS.test_db_uri
 else:
-    engine = create_engine(SETTINGS.database_url)
+    db_url = SETTINGS.database_url.replace('postgres://', 'postgresql://')
+    connect_args = {}
+engine = create_engine(db_url, connect_args=connect_args)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
