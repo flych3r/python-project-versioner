@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app import crud, schemas
 from app.dependencies.database import get_db
 from app.utils.exceptions import BadRequestError, ExceptionModel
-from app.utils.pypi import check_package_version
+from app.utils.pypi import check_package_version, normalize
 
 router = APIRouter(
     prefix='/projects',
@@ -41,6 +41,9 @@ def get_project_detail(project_name: str, db: Session = Depends(get_db)):
     responses={status.HTTP_400_BAD_REQUEST: {'model': ExceptionModel}}
 )
 def create_project(project: schemas.ProjectView, db: Session = Depends(get_db)):
+    pkg_names = [pkg.name for pkg in project.packages]
+    if len(set(map(normalize, pkg_names))) < len(pkg_names):
+        raise BadRequestError(message='One or more packages are duplicated')
     project.packages = [*map(check_package_version, project.packages)]
     project_db = crud.create_project(db, project)
     return {'name': project_db.name, 'packages': project_db.packages_releases}
