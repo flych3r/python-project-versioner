@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 def test_get_projects(test_client):
     response = test_client.get(
-        '/projects/',
+        '/api/projects/',
     )
     assert response.status_code == 200, 'Response not ok'
     assert len(response.json()) == 2, 'Wrong number of projects returned'
@@ -13,7 +13,7 @@ def test_get_projects(test_client):
 
 def test_get_project_name(test_client):
     response = test_client.get(
-        '/projects/PyMove/',
+        '/api/projects/PyMove/',
     )
     assert response.status_code == 200, 'Response not ok'
     assert response.json() == {
@@ -31,13 +31,13 @@ def test_get_project_name(test_client):
     }, 'Wrong project returned'
 
     response = test_client.get(
-        '/projects/pymove/',
+        '/api/projects/pymove/',
     )
     assert response.status_code == 200, 'Response not ok'
     assert response.json().get('name') == 'PyMove' , 'Wrong project returned'
 
     response = test_client.get(
-        '/projects/missing/',
+        '/api/projects/missing/',
     )
     assert response.status_code == 400, 'Wrong error code'
     assert response.json() == {
@@ -71,7 +71,7 @@ def test_create_project(test_client, mocker):
     mocker.patch('app.utils.pypi.requests.get', mock_pypi)
 
     response = test_client.post(
-        '/projects/',
+        '/api/projects/',
         json={
             'name': 'titan',
             'packages': [
@@ -94,7 +94,7 @@ def test_create_project(test_client, mocker):
     assert drs_version_pkg['version'] == '2.2.0', 'Wrong package version for missing'
 
     response = test_client.post(
-        '/projects/',
+        '/api/projects/',
         json={
             'name': 'titan',
             'packages': [
@@ -110,7 +110,7 @@ def test_create_project(test_client, mocker):
     } , 'Wrong error message for duplicate project'
 
     response = test_client.post(
-        '/projects/',
+        '/api/projects/',
         json={
             'name': 'titan2',
             'packages': [
@@ -126,7 +126,7 @@ def test_create_project(test_client, mocker):
     } , 'Wrong error message for project with duplicate packages'
 
     response = test_client.post(
-        '/projects/',
+        '/api/projects/',
         json={
             'name': 'machine-head',
             'packages': [
@@ -141,7 +141,7 @@ def test_create_project(test_client, mocker):
     } , 'Wrong error message for non existing package'
 
     response = test_client.post(
-        '/projects/',
+        '/api/projects/',
         json={
             'name': 'machine-head',
             'packages': [
@@ -157,14 +157,14 @@ def test_create_project(test_client, mocker):
 
 def test_delete_project(test_client):
     response = test_client.delete(
-        '/projects/PyMove/',
+        '/api/projects/PyMove/',
     )
     print(response.url)
     assert response.status_code == 200, 'Response not ok'
     assert response.json() == {'message': 'Project deleted'}, 'Wrong delete message'
 
     response = test_client.delete(
-        '/projects/PyMoved/',
+        '/api/projects/PyMoved/',
     )
     assert response.status_code == 400, 'Wrong error code'
     assert response.json() == {

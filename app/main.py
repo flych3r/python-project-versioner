@@ -10,7 +10,7 @@ app = FastAPI(
     description='A Rest API to manage Python projects packages versioning.',
     version=__version__,
 )
-app.include_router(projects.router)
+app.include_router(projects.router, prefix='/api')
 
 
 @app.exception_handler(BadRequestError)
