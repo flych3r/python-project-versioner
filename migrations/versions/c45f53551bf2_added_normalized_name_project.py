@@ -1,7 +1,7 @@
 """added normalized name project
 
 Revision ID: c45f53551bf2
-Revises: 79556fbbac1c
+Revises: 3b2b83f5774a
 Create Date: 2021-09-14 19:35:45.410804
 
 """
@@ -10,7 +10,7 @@ from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = 'c45f53551bf2'
-down_revision = '79556fbbac1c'
+down_revision = '3b2b83f5774a'
 branch_labels = None
 depends_on = None
 

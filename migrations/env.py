@@ -5,7 +5,7 @@ from sqlalchemy import engine_from_config, pool
 
 from app.dependencies.config import SETTINGS
 
-database_url = SETTINGS.db_uri
+database_url = SETTINGS.database_url
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
