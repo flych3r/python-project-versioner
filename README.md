@@ -83,7 +83,7 @@ DELETE /api/projects/titan
 
 ## Development
 
-A `devcontainer` for vscode is available with all the necessary configurations for local development is available.
+A `devcontainer` for vscode with all the necessary configurations for local development is available.
 
 ## Deploy
 
