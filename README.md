@@ -1,8 +1,8 @@
-# magpy-api
+# Python Project Versioner
 
 A Rest API to manage Python projects versioning.
 
-![MagPy API Architecture](./magpy-api.png)
+![Python Project Versioner API Architecture](./python-project-versioner.png)
 
 ## The Project
 

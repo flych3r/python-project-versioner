@@ -6,7 +6,7 @@ from app.routers import projects
 from app.utils.exceptions import BadRequestError
 
 app = FastAPI(
-    title='MagPy API',
+    title='Python Project Versioner',
     description='A Rest API to manage Python projects packages versioning.',
     version=__version__,
 )
